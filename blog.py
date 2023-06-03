@@ -25,15 +25,15 @@ posts= [
 
 @app.route('/')
 def home():
-    return render_template('home.html')
+    return render_template('home.html', title='Home Page')
 
 @app.route('/about')
 def about():
-    return render_template('about.html')
+    return render_template('about.html', title='About Page')
 
 @app.route('/post')
 def post():
-    return render_template('post.html', posts=posts)
+    return render_template('post.html', posts=posts, title='Posts Page')
 
 if __name__ == '__main__':
     app.run(debug=True)
