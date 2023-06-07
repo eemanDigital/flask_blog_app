@@ -15,7 +15,7 @@ posts= [
             'date': '12/3/23'
             },
         {
-            'content': 'Abiodun Oladunjoye, titled ‘President Tinubu appoints Gbajabiamila COS, Sen. Ibrahim Hadejia,',
+            'content': 'Abiodun Oladunjoye, titled President Tinubu appoints Gbajabiamila COS, Sen. Ibrahim Hadejia,',
               'title': '2nd Post',
                 'author': 'Chris',
                   'date': '2/3/23'
