@@ -1,4 +1,4 @@
-from blog import app, db, User, Post
+from flaskblog.models import app, db, User, Post
 
 # Create a Flask application instance
 # app = create_app()

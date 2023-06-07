@@ -1,8 +1,9 @@
 #wtf library will handle form management
 from flask_wtf import FlaskForm
-from wtforms  import StringField, PasswordField, SubmitField, BooleanField 
+from wtforms  import StringField, PasswordField, SubmitField, BooleanField
 #manage conditions for validation of user inputs
-from wtforms.validators import DataRequired, Length, Email, EqualTo
+from wtforms.validators import DataRequired, Length, Email, EqualTo,ValidationError 
+from flaskblog.models import User
 
 class RegistrationForm(FlaskForm):
     #set validation/requirements for username registration
@@ -15,6 +16,19 @@ class RegistrationForm(FlaskForm):
     confirm_password = PasswordField('Confirm Password', 
                                      validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Sign Up')
+
+    #custom form validation to check existing username
+    def validate_username(self, username):
+        user = User.query.filter_by(username=username.data).first()
+        if user:
+            raise ValidationError('Username already exist')
+
+    #custom form validation to check existing email
+    def validate_email(self, email):
+        email = User.query.filter_by(email=email.data).first()
+        if email:
+            raise ValidationError('Email already exist')
+
 
 
 class LoginForm(FlaskForm):

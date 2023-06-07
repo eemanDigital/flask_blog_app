@@ -1,8 +1,14 @@
-from blog import db
-from datetime import datetime
+from datetime import datetime 
+from flaskblog import db, login_manager
+from flask_login import UserMixin
 
 
-class User(db.Model):
+#load user
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+class User(db.Model, UserMixin):
     #model for the user
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
@@ -27,3 +33,4 @@ class Post(db.Model):
 
 def __repr__(self):
     return f"Post('{self.title}', '{self.date_posted}')"#printing content will be too long
+
