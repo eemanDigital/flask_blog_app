@@ -72,5 +72,5 @@ def validate_email(self, email):
 #form for new posts
 class PostForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
-    content = TextAreaField('Content', validator=[DataRequired()])
+    content = TextAreaField('Content', validators=[DataRequired()])
     submit = SubmitField('Post')
