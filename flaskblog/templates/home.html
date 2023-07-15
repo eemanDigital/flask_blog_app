@@ -1,31 +1,54 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-    {% for post in posts.items %}
-<article class="media content-section">
-    <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/'
-     + post.author.image_file) }}">
-<div class="mdeia-body">
-   <div class="article-metadata">
-   <a href="{{ url_for('posts.user_posts', username=post.author.username) }}" class="mr-2">{{ post.author.username }}</a>
-   <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
-</div>
-<h2><a href="{{ url_for('posts.post', post_id=post.id) }}" class="article-title">{{ post.title }}</a></h2>
-<p class="article-content">{{ post.content }}</p>
-</div> 
-</article> 
-    {% endfor %}
-    <!-- pagination -->
-{% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
-{% if page_num %}
-{% if posts.page == page_num %}
-    <a class="btn btn-info mb-4" href="{{ url_for('main.home', page=page_num) }}">{{ page_num }}</a>
-{% else %}
-<a class="btn btn-outline-info mb-4" href="{{ url_for('main.home',  page=page_num) }}">{{ page_num }}</a>
-{% endif %}
-{% else %}
-  ...
-{% endif %}
-{% endfor %}
-{% endblock %}
+  {% for post in posts.items %}
+		<article class="postcard dark blue">
+			<a class="postcard__img_link" href="#">
+				<img class="postcard__img" src="https://picsum.photos/1000/1000" alt="Image Title" />
+			</a>
+			<div class="postcard__text">
+                <h2><a href="{{ url_for('posts.post', post_id=post.id) }}" class="article-title">{{ post.title }}</a></h2>
+				<div class="postcard__subtitle small">
+					<time datetime="2020-05-25 12:00:00">
+						<i class="fas fa-calendar-alt mr-2"></i>{{ post.date_posted.strftime('%Y-%m-%d') }}
+					</time>
+				</div>
+				<div class="postcard__bar"></div>
+				<div class="postcard__preview-txt"><p class="article-content">{{ post.content[:100] }}...</p></div>
+				<ul class="postcard__tagbox">
+					<li class="tag__item"><i class="fas fa-tag mr-2"></i><b>Author :</b> </li>
+					<!-- <li class="tag__item"><i class="fas fa-clock mr-2"></i>55 mins.</li> -->
+					<li class="tag__item play blue">
+            <a href="{{ url_for('posts.user_posts', username=post.author.username) }}" class="mr-2">{{ post.author.username }}<i class="fas fa-play mr-2"></i></a>
+					</li>
+				</ul>
+			</div>
+		</article>
+		
 
+      <!-- <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
+      <div class="media-body">
+        <div class="article-metadata">
+          <a href="{{ url_for('posts.user_posts', username=post.author.username) }}" class="mr-2">{{ post.author.username }}</a>
+          <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+        </div>
+        <h2><a href="{{ url_for('posts.post', post_id=post.id) }}" class="article-title">{{ post.title }}</a></h2>
+        <p class="article-content">{{ post.content }}</p>
+      </div>  -->
+    </article> 
+  {% endfor %}
+
+  <div class="pagination-container">
+    {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+      {% if page_num %}
+        {% if posts.page == page_num %}
+          <a class="btn btn-info mb-4 active" href="{{ url_for('main.home', page=page_num) }}">{{ page_num }}</a>
+        {% else %}
+          <a class="btn btn-outline-info mb-4" href="{{ url_for('main.home', page=page_num) }}">{{ page_num }}</a>
+        {% endif %}
+      {% else %}
+        <span class="dots">...</span>
+      {% endif %}
+    {% endfor %}
+  </div>
+{% endblock %}
