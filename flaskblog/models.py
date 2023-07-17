@@ -1,6 +1,6 @@
-from datetime import datetime 
+from datetime import datetime,timedelta
 #from itsdangerous import URLSafeTimedSerializer as Serializer
-
+import jwt
 from itsdangerous import URLSafeTimedSerializer as Serializer
 from flaskblog import db, login_manager, app
 from flask_login import UserMixin
@@ -24,13 +24,41 @@ class User(db.Model, UserMixin):
  
 
 #method to create token
-def get_reset_token(self, expires_sec=1800):
-    s = Serializer(app.config['SECRET_KEY'], expires_sec)
-    return s.dumps({'user_id': self.id}).decode('utf-8')
+# def get_reset_token(self, expires_sec=1800):
+#     s = Serializer(app.config['SECRET_KEY'], expires_sec)
+#     return s.dumps({'user_id': self.id}).decode('utf-8')
+# def get_reset_token(self):
+#     """Generates a reset token for the user."""
+#     token = jwt.encode({
+#         "id": self.id,
+#         "exp": datetime.datetime.utcnow() + timedelta(days=1),
+#     }, app.config["SECRET_KEY"])
+#     return token
+
 
 #method to verify token
-@staticmethod#remove self as an argument
+# @staticmethod#remove self as an argument
+# def verify_reset_token(token):
+#    # Create a Serializer object with the application's secret key.
+#    s = Serializer(app.config['SECRET_KEY'])
+#    try:
+#         user_id = s.loads(token)['user_id']
+#    except:
+#         return None
+#    # Return the user object if the user ID is valid.
+#    return User.query.get(user_id)
+
+
+def get_reset_token(self):
+    """Generates a reset token for the user."""
+    token = jwt.encode({
+        "id": self.id,
+        "exp": datetime.datetime.utcnow() + timedelta(days=1),
+    }, app.config["SECRET_KEY"])
+    return token
+
 def verify_reset_token(token):
+   """Verifies a reset token and returns the user object if it is valid."""
    # Create a Serializer object with the application's secret key.
    s = Serializer(app.config['SECRET_KEY'])
    try:
@@ -39,6 +67,12 @@ def verify_reset_token(token):
         return None
    # Return the user object if the user ID is valid.
    return User.query.get(user_id)
+
+
+
+
+
+
 
 def __repr__(self):
     return f"User('{self.username}', {self.email}, '{self.image_file}')"
