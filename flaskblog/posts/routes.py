@@ -3,7 +3,6 @@ from flask import render_template, url_for, flash, redirect, request, abort
 from flaskblog import db
 from flaskblog.posts.forms import PostForm
 from flaskblog.models import User, Post
-from flaskblog.users.utils import save_picture
 from flask_login import login_required, current_user
 
 posts = Blueprint('posts', __name__)
@@ -12,48 +11,14 @@ posts = Blueprint('posts', __name__)
 @login_required
 def new_post():
     form = PostForm()
-    if form.validate_on_submit() and form.picture.data:
+    if form.validate_on_submit():
         post = Post(title=form.title.data, content=form.content.data, author=current_user)
-        picture_file =save_picture(form.picture.data)
-        current_user.image_file =  picture_file 
         db.session.add(post)
         db.session.commit()
         flash('Post created!', category='success')
-    image_file = url_for('static', filename='profile_pics/' 
-                          + current_user.image_file)
-    return render_template('create_post.html', image_file=image_file, title='New Post', 
+        return redirect(url_for("main.home"))
+    return render_template('create_post.html', title='New Post', 
                            form=form, legend='New Post')
-
-
-
-    # if form.validate_on_submit():
-    #     if form.picture.data:
-    #         picture_file =save_picture(form.picture.data)
-    #         current_user.image_file =  picture_file 
-    #     current_user.username = form.username.data
-    #     current_user.email = form.email.data
-    #     db.session.commit()
-    #     flash('Account successfuly updated', category='success')
-    #     return redirect(url_for('account'))
-    # elif request.method == 'GET':
-    #     form.username.data = current_user.username
-    #     form.email.data = current_user.email
-    # image_file = url_for('static', filename='profile_pics/' 
-    #                      + current_user.image_file)
-    # return render_template('account.html', title='Account Page',
-    #                         image_file=image_file, form=form)
-
-
-
-
-
-
-
-
-
-
-
-
 
 @posts.route('/post/<int:post_id>')
 def post(post_id):

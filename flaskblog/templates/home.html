@@ -4,7 +4,7 @@
   {% for post in posts.items %}
 		<article class="postcard dark blue">
 			<a class="postcard__img_link" href="#">
-				<img class="postcard__img" src="{{ image_file }}" alt="Image Title" />
+				<!-- <img class="postcard__img" src="https://picsum.photos/1000/1000" alt="Image Title" /> -->
 			</a>
 			<div class="postcard__text">
                 <h2><a href="{{ url_for('posts.post', post_id=post.id) }}" class="article-title">{{ post.title }}</a></h2>
@@ -14,7 +14,7 @@
 					</time>
 				</div>
 				<div class="postcard__bar"></div>
-				<div class="postcard__preview-txt"><p class="article-content">{{ post.content[:100] }}...</p></div>
+				<div class="postcard__preview-txt"><p class="article-content">{{ post.content[:200] }}...</p></div>
 				<ul class="postcard__tagbox">
 					<li class="tag__item"><i class="fas fa-tag mr-2"></i><b>Author :</b> </li>
 					<!-- <li class="tag__item"><i class="fas fa-clock mr-2"></i>55 mins.</li> -->
@@ -25,17 +25,6 @@
 			</div>
 		</article>
 		
-
-      <!-- <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
-      <div class="media-body">
-        <div class="article-metadata">
-          <a href="{{ url_for('posts.user_posts', username=post.author.username) }}" class="mr-2">{{ post.author.username }}</a>
-          <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
-        </div>
-        <h2><a href="{{ url_for('posts.post', post_id=post.id) }}" class="article-title">{{ post.title }}</a></h2>
-        <p class="article-content">{{ post.content }}</p>
-      </div>  -->
-    </article> 
   {% endfor %}
 
   <div class="pagination-container">
